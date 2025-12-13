@@ -1,9 +1,11 @@
 package com.finsight.finsight.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,8 +19,8 @@ public class Expense {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)  // every expense must have a name
-    private String name;
+    @Column(nullable = false)
+    private String categoryName;
 
     @Column(nullable = false)
     private Double amount;
@@ -30,10 +32,12 @@ public class Expense {
     private String notes;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
     private Users user;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
+   @ManyToOne
+   @JoinColumn(name = "budget_id")
+   @JsonIgnore
+    private Budget budget;
 }

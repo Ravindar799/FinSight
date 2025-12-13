@@ -3,7 +3,10 @@ package com.finsight.finsight.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,12 +22,10 @@ public class Budget {
 
     private String name;
 
-    @Column(name = "month_name") // avoid reserved keyword
-    private String month;
+    @Column(nullable = false)
+    private String period;
 
-    @Column(name = "year_val") // avoid reserved keyword
-    private Integer year;
-
+    @Column(nullable = false)
     private Double totalAmount;
 
     @ManyToOne
@@ -32,6 +33,9 @@ public class Budget {
     @JsonIgnore
     private Users user;
 
-    @ManyToMany
-    private List<Category> categories;
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "budget", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Expense> expenses = new ArrayList<>();
 }
